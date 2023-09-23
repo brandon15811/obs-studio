@@ -58,7 +58,17 @@ runs:
       shell: bash
       run: |
         : Install Dependencies 🛍️
+        #apt update && apt install -y cmake
         echo ::group::Install Dependencies
+        git clone https://github.com/paullouisageneau/libdatachannel.git
+        cd libdatachannel/
+        git submodule update --init --recursive --depth 1
+        sudo apt install libssl-dev
+        cmake -B build -DUSE_GNUTLS=0 -DUSE_NICE=0 -DCMAKE_BUILD_TYPE=Release
+        cd build
+        make -j2
+        sudo make install
+        #/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
         echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> $GITHUB_PATH
         brew install --quiet zsh
@@ -76,8 +86,9 @@ runs:
           --target linux-${{ inputs.target }}
         )
         if (( ${+RUNNER_DEBUG} )) build_args+=(--debug)
-
-        git fetch origin --no-tags --no-recurse-submodules -q
+        echo $PWD
+        ls -l
+        #git fetch origin --no-tags --no-recurse-submodules -q
         .github/scripts/build-linux ${build_args}
 
     - name: Run Windows Build
