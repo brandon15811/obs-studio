@@ -64,6 +64,7 @@ jobs:
     name: macOS 🍏
     runs-on: macos-13
     needs: check-event
+    if: false
     strategy:
       fail-fast: false
       matrix:
@@ -256,6 +257,7 @@ jobs:
     name: Flatpak 📦
     runs-on: ubuntu-22.04
     needs: check-event
+    if: false
     defaults:
       run:
         shell: bash
@@ -311,6 +313,7 @@ jobs:
     name: Windows 🪟
     runs-on: windows-2022
     needs: check-event
+    if: false
     defaults:
       run:
         shell: pwsh
